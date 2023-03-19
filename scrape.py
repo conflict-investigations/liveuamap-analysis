@@ -7,6 +7,7 @@ import pathlib
 import requests
 
 BASE_URL = 'https://liveuamap.com/ajax/do'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'  # noqa
 
 DATA_FOLDER = 'data'
 EXPORT_FILE = 'liveuamap.csv'
@@ -28,7 +29,10 @@ def scrape_json(timestamp):
         'lang': 'en',
         'isUserReg': 0
     }
-    response = requests.get(url=BASE_URL, params=params)
+    headers = {
+        'User-Agent': USER_AGENT,
+    }
+    response = requests.get(url=BASE_URL, headers=headers, params=params)
 
     return response.json()
 
