@@ -31,3 +31,16 @@ See the accompanying ipython jupyter notebook:
 ![comparison_liveuamap_nzz_median](comparison_liveuamap_nzz_median.svg)
 ![comparison_territory_net_missiles_eor](comparison_territory_net_missiles_eor.svg)
 ![comparison_territory_total_missiles_eor](comparison_territory_total_missiles_eor.svg)
+
+### License
+
+`stanford.json` from file "National Boundary, Ukraine, 2015" by Hijmans, Robert
+J. and University of California, Berkeley. Museum of Vertebrate Zoology.
+Downloaded from [geodata.lib.utexas.edu](https://geodata.lib.utexas.edu/catalog/stanford-nv937bq8361)
+
+Data from liveuamap, in addition to own calculations from data based on analysis
+of [NZZ.ch maps](https://github.com/conflict-investigations/nzz-maps) and Centre
+for Information Resilience datasets.
+
+Do whatever you like with it, but give credit to the original authors of the
+datasets.
