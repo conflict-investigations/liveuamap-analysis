@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import pandas as pd
 import pathlib
 
 import requests
@@ -8,12 +9,12 @@ import requests
 BASE_URL = 'https://liveuamap.com/ajax/do'
 
 DATA_FOLDER = 'data'
+EXPORT_FILE = 'liveuamap.csv'
 
 start = datetime.datetime(2022, 2, 24)
 end = datetime.datetime.today()
 dates = [start + datetime.timedelta(days=x)
          for x in range(0, (end-start).days + 1)]
-dates_ts = [str(int(datetime.datetime.timestamp(date))) for date in dates]
 
 def save_to_file(items, filename):
     with open(filename, 'w') as f:
@@ -34,6 +35,18 @@ def scrape_json(timestamp):
 
 # Ensure 'items' dir exists
 pathlib.Path(DATA_FOLDER).mkdir(parents=True, exist_ok=True)
+
+try:
+    previous = pd.read_csv(EXPORT_FILE, parse_dates=True)
+    previous.index = pd.to_datetime(previous.date.values).to_pydatetime()
+    previous = previous.drop(columns=['date'])
+except FileNotFoundError:
+    previous = pd.DataFrame(columns=['area'])
+
+to_process = []
+for date in dates:
+    if date not in previous.index:
+        to_process.append(str(int(datetime.datetime.timestamp(date))))
 
 def scrape_items(items):
 
@@ -60,4 +73,4 @@ def scrape_items(items):
     return list(map(scrape_content, ids))
 
 
-scrape_items(dates_ts)
+scrape_items(to_process)
