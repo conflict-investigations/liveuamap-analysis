@@ -9,7 +9,7 @@ from shapely.geometry import Polygon, MultiPolygon, shape
 from shapely import GEOSException
 
 PARALLEL_PROCESSES = 16
-EXPORT_FILE = 'liveuamap.csv'
+EXPORT_FILE = 'territory.csv'
 
 try:
     previous = pd.read_csv(EXPORT_FILE, parse_dates=True)
