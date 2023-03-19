@@ -1,0 +1,55 @@
+name: Fetch latest map data and compute areas
+
+permissions:
+  contents: write
+
+# Controls when the action will run.
+on:
+  workflow_dispatch:
+  schedule:
+    # Every day at '01:48'
+    # "Random" value to ensure it doesn't collide with peak scheduling hours
+    - cron:  '48 1 * * *'
+
+jobs:
+  fetch_data_and_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        cache-dependency-path: 'requirements.txt'
+
+    - name: Install Python dependencies via pip
+      run: pip install -r requirements.txt
+
+    - name: Fetch latest map data via scrape.py
+      run: python scrape.py
+      env:
+        TZ: Europe/Paris
+
+    - name: Recompute area via update_csv.py
+      run: python update_csv.py
+
+    - name: Commit files
+      run: |
+          git lfs install
+          git status
+          echo "Checking data on: `date`"
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "New update available"
+            git config --local user.name "actions-user"
+            git config --local user.email "actions@github.com"
+            git add -A
+            git commit -am "Automatic data update - $(date '+%Y-%m-%d %H:%M')"
+            git push origin master
+          else
+            echo "No changes to commit"
+          fi
+      env:
+        TZ: Europe/Paris
