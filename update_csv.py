@@ -101,7 +101,7 @@ def process_item(args):
 
     # Drop areas entirely outside Ukrainian bounds
     # Prevents an error message when running .intersection() next
-    ua_territory = ua_territory[ua_territory['intersects'] is True]
+    ua_territory = ua_territory[ua_territory['intersects'] == True]
     # Reduce controlled areas to inside Ukrainian bounds
     try:
         ua_territory['geometry'] = ua_territory['geometry'].intersection(outline)
