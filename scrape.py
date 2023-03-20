@@ -12,7 +12,8 @@ USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 
 DATA_FOLDER = 'data'
 EXPORT_FILE = 'territory.csv'
 
-start = datetime.datetime(2022, 2, 24)
+# Already start at 2022-02-20 to account for inaccuracies on 2022-02-24
+start = datetime.datetime(2022, 2, 20)
 end = datetime.datetime.today()
 dates = [start + datetime.timedelta(days=x)
          for x in range(0, (end-start).days + 1)]
