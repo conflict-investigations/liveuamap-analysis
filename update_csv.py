@@ -88,6 +88,8 @@ def process_item(args):
     ua_territory = ua_territory.set_crs('EPSG:4326')
 
     # Resolve some issues with data
+    # https://gis.stackexchange.com/questions/254413/how-to-fix-hole-lies-outside-shell
+    # https://gis.stackexchange.com/questions/253224/geopandas-buffer-using-geodataframe-while-maintaining-the-dataframe
     ua_territory['geometry'] = ua_territory.geometry.buffer(0)
 
     try:
@@ -118,7 +120,8 @@ def process_item(args):
     ua_territory = ua_territory.drop(['intersects'], axis=1)
 
     ua_territory = ua_territory.to_crs({'proj': 'cea'})
-    ua_territory['area'] = ua_territory['geometry'].area / 10**6
+    # Compute square kilometers and round to 3 decimal places (=1m)
+    ua_territory['area'] = (ua_territory['geometry'].area / 10**6).round(3)
 
     area = ua_territory['area'].sum()
 
@@ -146,7 +149,7 @@ df = df.drop(['id'], axis=1)
 df = df.sort_values(by='date', ascending = True)
 df = df.set_index('date')
 
-df['area'] = df['area'].astype('float')
+df['area'] = df['area'].astype('float').round(3)
 # Calculate change to previous day which translates to daily gains/losses
 df['change'] = df['area'].diff()
 
@@ -159,6 +162,10 @@ adjusted['change'] = adjusted['area'].diff()
 
 combined = pd.DataFrame(pd.concat([previous['area'], adjusted['area']]))
 combined.index.name = 'date'
+# Round all values, including previous ones
+combined['area'] = combined['area'].round(3)
+
+combined = combined.sort_index(ascending=True)
 
 # Save all computed area figures to .csv file
 combined['area'].to_csv(EXPORT_FILE)
