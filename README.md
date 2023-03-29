@@ -29,6 +29,8 @@ See the accompanying ipython jupyter notebook:
 ![liveuamap_area_net](liveuamap_area_net.svg)
 ![liveuamap_nzz_area_comparison_total](liveuamap_nzz_area_comparison_total.svg)
 ![comparison_liveuamap_nzz_median](comparison_liveuamap_nzz_median.svg)
+![liveuamap_novaya_nzz_area_comparison_tota](liveuamap_novaya_nzz_area_comparison_total.png)
+
 ![comparison_territory_net_missiles_eor](comparison_territory_net_missiles_eor.svg)
 ![comparison_territory_total_missiles_eor](comparison_territory_total_missiles_eor.svg)
 
