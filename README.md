@@ -42,7 +42,8 @@ Downloaded from [geodata.lib.utexas.edu](https://geodata.lib.utexas.edu/catalog/
 
 Data from liveuamap, in addition to own calculations from data based on analysis
 of [NZZ.ch maps](https://github.com/conflict-investigations/nzz-maps) and Centre
-for Information Resilience datasets.
+for Information Resilience datasets, also
+[Novaya Gateta](https://novayagazeta.eu/articles/2023/02/28/dead-end-en).
 
 Do whatever you like with it, but give credit to the original authors of the
 datasets.
