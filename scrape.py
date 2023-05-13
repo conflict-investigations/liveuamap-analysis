@@ -7,7 +7,7 @@ import pathlib
 import requests
 
 BASE_URL = 'https://liveuamap.com/ajax/do'
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'  # noqa
+USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'  # noqa
 
 DATA_FOLDER = 'data'
 EXPORT_FILE = 'territory.csv'
@@ -28,10 +28,14 @@ def scrape_json(timestamp):
         'time': timestamp,
         'resid': 0,
         'lang': 'en',
-        'isUserReg': 0
+        'isUserReg': 0,
     }
     headers = {
         'User-Agent': USER_AGENT,
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept-Language': 'en-US,en;q=0.7,de-DE;q=0.3',
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding': 'gzip, deflate, br',
     }
     response = requests.get(url=BASE_URL, headers=headers, params=params)
 
