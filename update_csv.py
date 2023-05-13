@@ -5,10 +5,11 @@ import pandas as pd
 import os
 from datetime import datetime
 from multiprocessing.pool import ThreadPool
-from shapely.geometry import Polygon, MultiPolygon, shape
+from shapely.geometry import Polygon, MultiPolygon
 from shapely import GEOSException
 
 PARALLEL_PROCESSES = 16
+ROUNDING_PRECISION = 3
 EXPORT_FILE = 'territory.csv'
 
 try:
@@ -121,14 +122,13 @@ def process_item(args):
 
     ua_territory = ua_territory.to_crs({'proj': 'cea'})
     # Compute square kilometers and round to 3 decimal places (=1m)
-    ua_territory['area'] = (ua_territory['geometry'].area / 10**6).round(3)
+    ua_territory['area'] = (ua_territory['geometry'].area / 10**6).round(ROUNDING_PRECISION)
 
     area = ua_territory['area'].sum()
 
     return [id_, date, area, joined]
 
 
-processed = []
 files = sorted(os.listdir('data'))
 to_process = []
 for filename in files:
@@ -149,7 +149,7 @@ df = df.drop(['id'], axis=1)
 df = df.sort_values(by='date', ascending = True)
 df = df.set_index('date')
 
-df['area'] = df['area'].astype('float').round(3)
+df['area'] = df['area'].astype('float').round(ROUNDING_PRECISION)
 # Calculate change to previous day which translates to daily gains/losses
 df['change'] = df['area'].diff()
 
@@ -162,10 +162,14 @@ adjusted['change'] = adjusted['area'].diff()
 
 combined = pd.DataFrame(pd.concat([previous['area'], adjusted['area']]))
 combined.index.name = 'date'
+
+# Apparently in March 2022 a few duplicates appear, normalize them
+#combined = combined.resample('1d').mean()
+
 # Round all values, including previous ones
-combined['area'] = combined['area'].round(3)
+combined['area'] = combined['area'].round(ROUNDING_PRECISION)
 
 combined = combined.sort_index(ascending=True)
 
 # Save all computed area figures to .csv file
-combined['area'].to_csv(EXPORT_FILE)
+combined['area'].to_csv(EXPORT_FILE, date_format='%Y-%m-%d %H:%M:%S')
