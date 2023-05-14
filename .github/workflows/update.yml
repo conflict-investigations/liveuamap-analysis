@@ -14,6 +14,8 @@ on:
 jobs:
   fetch_data_and_commit:
     runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Paris
 
     steps:
     - uses: actions/checkout@master
@@ -51,5 +53,3 @@ jobs:
           else
             echo "No changes to commit"
           fi
-      env:
-        TZ: Europe/Paris
