@@ -40,16 +40,16 @@ jobs:
 
     - name: Commit files
       run: |
-          git lfs install
           git status
           echo "Checking data on: `date`"
-          if [ -n "$(git status --porcelain)" ]; then
+          if [[ `git status --porcelain` ]]; then
             echo "New update available"
             git config --local user.name "actions-user"
             git config --local user.email "actions@github.com"
-            git add -A
+            git add .
             git commit -am "Automatic data update - $(date '+%Y-%m-%d %H:%M')"
             git push origin master
           else
             echo "No changes to commit"
           fi
+      shell: bash
