@@ -56,6 +56,8 @@ to_process = []
 for date in dates:
     if date not in previous.index:
         to_process.append(str(int(datetime.datetime.timestamp(date))))
+    # To backfill everything:
+    #to_process.append(str(int(datetime.datetime.timestamp(date))))
 
 def scrape_items(items):
 

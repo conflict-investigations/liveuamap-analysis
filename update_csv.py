@@ -50,6 +50,15 @@ def extract_shapes(f):
         # Recaptured areas are not Russian-controlled, to skip them
         if field_dict.get('name') == 'Ukraine recaptured':
             continue
+        # Ignore incursions into Russian territory (should be omitted through
+        # intersections with Ukraine boundary file anyway)
+        if field_dict.get('name') == 'Freedom Of Russia and RDK':
+            continue
+        if field_dict.get('name') == 'Transnistria':
+            continue
+        # Skip Russian territory which might intersect due to boundary issues
+        if 'region of Russia' in field_dict.get('name'):
+            continue
         # Same for "Territories, liberated from Russian forces"
         if 'liberated from Russian' in field_dict.get('description'):
             continue
