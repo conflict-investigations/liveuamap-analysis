@@ -32,8 +32,6 @@ jobs:
 
     - name: Fetch latest map data via scrape.py
       run: python scrape.py
-      env:
-        TZ: Europe/Paris
 
     - name: Recompute area via update_csv.py
       run: python update_csv.py
